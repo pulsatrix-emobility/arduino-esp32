@@ -82,7 +82,7 @@ set(LIBRARY_SRCS
   libraries/WiFi/src/WiFiUdp.cpp
   libraries/WiFiProv/src/WiFiProv.cpp
   libraries/Wire/src/Wire.cpp
-  libraries/TFT_eSPI/src/TFT_eSPI.cpp
+  libraries/TFT_eSPI/TFT_eSPI.cpp
   )
 
 set(BLE_SRCS
@@ -148,6 +148,7 @@ set(includedirs
   libraries/WiFi/src
   libraries/WiFiProv/src
   libraries/Wire/src
+  libraries/TFT_eSPI
   )
 
 set(srcs ${CORE_SRCS} ${LIBRARY_SRCS} ${BLE_SRCS})
