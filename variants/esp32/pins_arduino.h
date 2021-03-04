@@ -7,6 +7,13 @@
 #define NUM_DIGITAL_PINS        40
 #define NUM_ANALOG_INPUTS       16
 
+// ---------------------------------------------------------
+// Additional definitions added for pulsatrix openEVCC v2.02
+#define ETH_CLK_MODE            ETH_CLOCK_GPIO17_OUT
+#define ETH_PHY_MDC             23
+#define ETH_PHY_MDIO            18
+// ---------------------------------------------------------
+
 #define analogInputToDigitalPin(p)  (((p)<20)?(esp32_adc2gpio[(p)]):-1)
 #define digitalPinToInterrupt(p)    (((p)<40)?(p):-1)
 #define digitalPinHasPWM(p)         (p < 34)
@@ -18,9 +25,12 @@ static const uint8_t SDA = 21;
 static const uint8_t SCL = 22;
 
 static const uint8_t SS    = 5;
-static const uint8_t MOSI  = 23;
-static const uint8_t MISO  = 19;
-static const uint8_t SCK   = 18;
+//static const uint8_t MOSI  = 23;
+static const uint8_t MOSI  = 2; // pulsatrix openEVCC v2.02
+//static const uint8_t MISO  = 19;
+static const uint8_t MISO  = 15; // pulsatrix openEVCC v2.02
+//static const uint8_t SCK   = 18;
+static const uint8_t SCK  = 13; // pulsatrix openEVCC v2.02
 
 static const uint8_t A0 = 36;
 static const uint8_t A3 = 39;
