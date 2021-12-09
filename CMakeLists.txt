@@ -171,6 +171,7 @@ set(includedirs
   libraries/BluetoothSerial/src
   libraries/DNSServer/src
   libraries/EEPROM/src
+  libraries/Ethernet/src
   libraries/ESP32/src
   libraries/ESPmDNS/src
   libraries/FFat/src
