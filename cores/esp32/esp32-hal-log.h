@@ -87,6 +87,8 @@ const char * pathToFileName(const char * path);
 int log_printf(const char *fmt, ...);
 void log_print_buf(const uint8_t *b, size_t len);
 
+extern void log_CrashLog(bool panic, const char *format, ...);
+
 #define ARDUHAL_SHORT_LOG_FORMAT(letter, format)  ARDUHAL_LOG_COLOR_ ## letter format ARDUHAL_LOG_RESET_COLOR "\r\n"
 #define ARDUHAL_LOG_FORMAT(letter, format)  ARDUHAL_LOG_COLOR_ ## letter "[%6u][" #letter "][%s:%u] %s(): " format ARDUHAL_LOG_RESET_COLOR "\r\n", (unsigned long) (esp_timer_get_time() / 1000ULL), pathToFileName(__FILE__), __LINE__, __FUNCTION__
 
@@ -94,7 +96,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_VERBOSE
 #ifndef USE_ESP_IDF_LOG
-#define log_v(format, ...) log_printf(ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__)
+#define log_v(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_v(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__)
 #define log_buf_v(b,l) do{ARDUHAL_LOG_COLOR_PRINT(V);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
@@ -110,7 +116,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_DEBUG
 #ifndef USE_ESP_IDF_LOG
-#define log_d(format, ...) log_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__)
+#define log_d(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_d(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__)
 #define log_buf_d(b,l) do{ARDUHAL_LOG_COLOR_PRINT(D);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
@@ -126,7 +136,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_INFO
 #ifndef USE_ESP_IDF_LOG
-#define log_i(format, ...) log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__)
+#define log_i(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_i(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__)
 #define log_buf_i(b,l) do{ARDUHAL_LOG_COLOR_PRINT(I);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
@@ -142,7 +156,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_WARN
 #ifndef USE_ESP_IDF_LOG
-#define log_w(format, ...) log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__)
+#define log_w(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_w(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__)
 #define log_buf_w(b,l) do{ARDUHAL_LOG_COLOR_PRINT(W);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
@@ -158,7 +176,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_ERROR
 #ifndef USE_ESP_IDF_LOG
-#define log_e(format, ...) log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
+#define log_e(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_e(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
 #define log_buf_e(b,l) do{ARDUHAL_LOG_COLOR_PRINT(E);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
@@ -174,7 +196,11 @@ void log_print_buf(const uint8_t *b, size_t len);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_NONE
 #ifndef USE_ESP_IDF_LOG
-#define log_n(format, ...) log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
+#define log_n(format, ...)                                            \
+  do {                                                                \
+    log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
+  } while (0)
 #define isr_log_n(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
 #define log_buf_n(b,l) do{ARDUHAL_LOG_COLOR_PRINT(E);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
