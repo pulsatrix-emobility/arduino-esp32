@@ -874,7 +874,7 @@ int uartGetDebug()
 
 int log_printfv(const char *format, va_list arg)
 {
-    static char loc_buf[64];
+    static char loc_buf[200];
     char * temp = loc_buf;
     uint32_t len;
     va_list copy;
