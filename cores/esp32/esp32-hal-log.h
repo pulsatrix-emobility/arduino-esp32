@@ -82,7 +82,7 @@ const char *pathToFileName(const char *path);
 int log_printf(const char *fmt, ...);
 void log_print_buf(const uint8_t *b, size_t len);
 
-extern void log_CrashLog(bool panic, const char* format, ...);
+void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
 
 #define ARDUHAL_SHORT_LOG_FORMAT(letter, format) ARDUHAL_LOG_COLOR_##letter format ARDUHAL_LOG_RESET_COLOR "\r\n"
 #define ARDUHAL_LOG_FORMAT(letter, format)                                                             \
