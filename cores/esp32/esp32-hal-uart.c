@@ -381,7 +381,7 @@ int uartGetDebug()
 
 int log_printf(const char *format, ...)
 {
-    static char loc_buf[64];
+    static char loc_buf[200];
     char * temp = loc_buf;
     int len;
     va_list arg;

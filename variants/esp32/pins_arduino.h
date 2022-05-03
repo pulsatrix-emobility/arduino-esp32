@@ -7,13 +7,6 @@
 #define NUM_DIGITAL_PINS        40
 #define NUM_ANALOG_INPUTS       16
 
-// ---------------------------------------------------------
-// Additional definitions added for pulsatrix openEVCC v2.02
-#define ETH_CLK_MODE            ETH_CLOCK_GPIO17_OUT
-#define ETH_PHY_MDC             23
-#define ETH_PHY_MDIO            18
-// ---------------------------------------------------------
-
 #define analogInputToDigitalPin(p)  (((p)<20)?(esp32_adc2gpio[(p)]):-1)
 #define digitalPinToInterrupt(p)    (((p)<40)?(p):-1)
 #define digitalPinHasPWM(p)         (p < 34)
