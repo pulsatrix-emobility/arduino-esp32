@@ -37,8 +37,10 @@ extern "C" {
 #else
   #define ARDUHAL_LOG_LEVEL CORE_DEBUG_LEVEL
   #ifdef USE_ESP_IDF_LOG
+#ifndef LOG_LOCAL_LEVEL
     #define LOG_LOCAL_LEVEL CORE_DEBUG_LEVEL
   #endif
+#endif
 #endif
 
 #ifndef CONFIG_ARDUHAL_LOG_COLORS
@@ -332,9 +334,9 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
 #include "esp_log.h"
 
 #ifdef USE_ESP_IDF_LOG
-  #ifndef TAG
-    #define TAG "ARDUINO"
-  #endif
+//#ifndef TAG
+//#define TAG "ARDUINO"
+//#endif
 //#define log_n(format, ...) myLog(ESP_LOG_NONE, format, ##__VA_ARGS__)
 #else
   #ifdef CONFIG_ARDUHAL_ESP_LOG
