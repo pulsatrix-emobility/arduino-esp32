@@ -576,7 +576,7 @@ BLEAdvertising* BLEDevice::getAdvertising() {
 		m_bleAdvertising = new BLEAdvertising();
 		log_i("create advertising");
 	}
-	log_d("get advertising");
+	log_v("get advertising");
 	return m_bleAdvertising; 
 }
 
