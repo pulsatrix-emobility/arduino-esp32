@@ -211,7 +211,14 @@ unsigned long ARDUINO_ISR_ATTR millis()
 
 void delay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    // If ms=0 => leave it, since "vTaskDelay()" will then only force a re-schedule
+    // If ms<MIN => then delay MIN
+    if ((ms == 0) || (ms >= portTICK_PERIOD_MS))
+      vTaskDelay(ms / portTICK_PERIOD_MS);
+    else {
+      log_printf("delay(): WARNING! requested delay=%d[ms] is less than the minimum possible delay = 1 Tick = %d[ms], so a 1 full Tick (%d[ms]) is going to be delayed herein now.\n", ms,  portTICK_PERIOD_MS,  portTICK_PERIOD_MS);
+      vTaskDelay(1);
+    }
 }
 
 void ARDUINO_ISR_ATTR delayMicroseconds(uint32_t us)
