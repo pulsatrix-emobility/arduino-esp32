@@ -12,39 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "esp_attr.h"
-#include "esp_log.h"
-#include "esp_partition.h"
-#include "esp_timer.h"
+#include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "nvs.h"
+#include "esp_attr.h"
 #include "nvs_flash.h"
-#include "sdkconfig.h"
+#include "nvs.h"
+#include "esp_partition.h"
+#include "esp_log.h"
+#include "esp_timer.h"
 #ifdef CONFIG_APP_ROLLBACK_ENABLE
 #include "esp_ota_ops.h"
 #endif //CONFIG_APP_ROLLBACK_ENABLE
 #ifdef CONFIG_BT_ENABLED
 #include "esp_bt.h"
 #endif //CONFIG_BT_ENABLED
-#include "esp32-hal.h"
-#include "esp_task_wdt.h"
-#include "soc/apb_ctrl_reg.h"
+#include <sys/time.h>
 #include "soc/rtc.h"
 #include "soc/rtc_cntl_reg.h"
-#include <sys/time.h>
+#include "soc/apb_ctrl_reg.h"
+#include "esp_task_wdt.h"
+#include "esp32-hal.h"
 
 #include "esp_system.h"
 #ifdef ESP_IDF_VERSION_MAJOR // IDF 4+
 #if CONFIG_IDF_TARGET_ESP32 // ESP32/PICO-D4
 #include "esp32/rom/rtc.h"
 #elif CONFIG_IDF_TARGET_ESP32S2
-#include "driver/temp_sensor.h"
 #elif CONFIG_IDF_TARGET_ESP32S3
 #include "driver/temp_sensor.h"
-#elif CONFIG_IDF_TARGET_ESP32C3
 #include "driver/temp_sensor.h"
+#elif CONFIG_IDF_TARGET_ESP32C3
 #include "esp32c3/rom/rtc.h"
+#include "driver/temp_sensor.h"
 #else 
 #error Target CONFIG_IDF_TARGET is not supported
 #endif
