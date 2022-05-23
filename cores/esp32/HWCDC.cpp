@@ -294,7 +294,7 @@ void HWCDC::flush(void)
         usb_serial_jtag_ll_ena_intr_mask(USB_SERIAL_JTAG_INTR_SERIAL_IN_EMPTY);
     }
     while(uxItemsWaiting){
-        delay(5);
+        delay(10);
         vRingbufferGetInfo(tx_ring_buf, NULL, NULL, NULL, NULL, &uxItemsWaiting);
     }
     xSemaphoreGive(tx_lock);

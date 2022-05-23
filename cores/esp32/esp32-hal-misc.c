@@ -12,41 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "sdkconfig.h"
+#include "esp_attr.h"
+#include "esp_log.h"
+#include "esp_partition.h"
+#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_attr.h"
-#include "nvs_flash.h"
 #include "nvs.h"
-#include "esp_partition.h"
-#include "esp_log.h"
-#include "esp_timer.h"
+#include "nvs_flash.h"
+#include "sdkconfig.h"
 #ifdef CONFIG_APP_ROLLBACK_ENABLE
 #include "esp_ota_ops.h"
 #endif //CONFIG_APP_ROLLBACK_ENABLE
 #ifdef CONFIG_BT_ENABLED
 #include "esp_bt.h"
 #endif //CONFIG_BT_ENABLED
-#include <sys/time.h>
+#include "esp32-hal.h"
+#include "esp_task_wdt.h"
+#include "soc/apb_ctrl_reg.h"
 #include "soc/rtc.h"
 #include "soc/rtc_cntl_reg.h"
-#include "soc/apb_ctrl_reg.h"
-#include "esp_task_wdt.h"
-#include "esp32-hal.h"
+#include <sys/time.h>
 
 #include "esp_system.h"
 #ifdef ESP_IDF_VERSION_MAJOR // IDF 4+
 #if CONFIG_IDF_TARGET_ESP32 // ESP32/PICO-D4
 #include "esp32/rom/rtc.h"
 #elif CONFIG_IDF_TARGET_ESP32S2
-#include "esp32s2/rom/rtc.h"
 #include "driver/temp_sensor.h"
 #elif CONFIG_IDF_TARGET_ESP32S3
-#include "esp32s3/rom/rtc.h"
 #include "driver/temp_sensor.h"
 #elif CONFIG_IDF_TARGET_ESP32C3
-#include "esp32c3/rom/rtc.h"
 #include "driver/temp_sensor.h"
+#include "esp32c3/rom/rtc.h"
 #else 
 #error Target CONFIG_IDF_TARGET is not supported
 #endif
@@ -175,7 +173,14 @@ unsigned long ARDUINO_ISR_ATTR millis()
 
 void delay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    // If ms=0 => leave it, since "vTaskDelay()" will then only force a re-schedule
+    // If ms<MIN => then delay MIN
+    if ((ms == 0) || (ms >= portTICK_PERIOD_MS))
+      vTaskDelay(ms / portTICK_PERIOD_MS);
+    else {
+      log_printf("delay(): WARNING! requested delay=%d[ms] is less than the minimum possible delay = 1 Tick = %d[ms], so a 1 full Tick (%d[ms]) is going to be delayed herein now.\n", ms,  portTICK_PERIOD_MS,  portTICK_PERIOD_MS);
+      vTaskDelay(1);
+    }
 }
 
 void ARDUINO_ISR_ATTR delayMicroseconds(uint32_t us)
