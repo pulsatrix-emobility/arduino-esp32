@@ -56,9 +56,9 @@ BLEService::BLEService(BLEUUID uuid, uint16_t numHandles) {
  * @return N/A.
  */
 
-void BLEService::executeCreate(BLEServer* pServer) {
+void BLEService::executeCreate(BLEServer* server) {
 	log_v(">> executeCreate() - Creating service (esp_ble_gatts_create_service) service uuid: %s", getUUID().toString().c_str());
-	m_pServer          = pServer;
+	m_pServer          = server;
 	m_semaphoreCreateEvt.take("executeCreate"); // Take the mutex and release at event ESP_GATTS_CREATE_EVT
 
 	esp_gatt_srvc_id_t srvc_id;

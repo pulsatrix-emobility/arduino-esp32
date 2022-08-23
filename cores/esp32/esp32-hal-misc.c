@@ -39,7 +39,8 @@
 #if CONFIG_IDF_TARGET_ESP32 // ESP32/PICO-D4
 #include "esp32/rom/rtc.h"
 #elif CONFIG_IDF_TARGET_ESP32S2
-#include "esp32s2/rom/rtc.h"
+#elif CONFIG_IDF_TARGET_ESP32S3
+#include "driver/temp_sensor.h"
 #include "driver/temp_sensor.h"
 #elif CONFIG_IDF_TARGET_ESP32C3
 #include "esp32c3/rom/rtc.h"
@@ -172,7 +173,14 @@ unsigned long ARDUINO_ISR_ATTR millis()
 
 void delay(uint32_t ms)
 {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
+    // If ms=0 => leave it, since "vTaskDelay()" will then only force a re-schedule
+    // If ms<MIN => then delay MIN
+    if ((ms == 0) || (ms >= portTICK_PERIOD_MS))
+      vTaskDelay(ms / portTICK_PERIOD_MS);
+    else {
+      log_printf("delay(): WARNING! requested delay=%d[ms] is less than the minimum possible delay = 1 Tick = %d[ms], so a 1 full Tick (%d[ms]) is going to be delayed herein now.\n", ms,  portTICK_PERIOD_MS,  portTICK_PERIOD_MS);
+      vTaskDelay(1);
+    }
 }
 
 void ARDUINO_ISR_ATTR delayMicroseconds(uint32_t us)
@@ -232,7 +240,7 @@ void initArduino()
 #endif
     esp_log_level_set("*", CONFIG_LOG_DEFAULT_LEVEL);
     esp_err_t err = nvs_flash_init();
-    if(err == ESP_ERR_NVS_NO_FREE_PAGES){
+    if(err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND){
         const esp_partition_t* partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_NVS, NULL);
         if (partition != NULL) {
             err = esp_partition_erase_range(partition, 0, partition->size);
@@ -241,6 +249,8 @@ void initArduino()
             } else {
                 log_e("Failed to format the broken NVS partition!");
             }
+        } else {
+            log_e("Could not find NVS partition");
         }
     }
     if(err) {

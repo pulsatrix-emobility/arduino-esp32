@@ -37,8 +37,10 @@ extern "C" {
 #else
   #define ARDUHAL_LOG_LEVEL CORE_DEBUG_LEVEL
   #ifdef USE_ESP_IDF_LOG
+#ifndef LOG_LOCAL_LEVEL
     #define LOG_LOCAL_LEVEL CORE_DEBUG_LEVEL
   #endif
+#endif
 #endif
 
 #ifndef CONFIG_ARDUHAL_LOG_COLORS
@@ -81,8 +83,7 @@ extern "C" {
 const char *pathToFileName(const char *path);
 int log_printf(const char *fmt, ...);
 void log_print_buf(const uint8_t *b, size_t len);
-
-void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
+extern void log_CrashLog(bool panic, const char *format, ...);
 
 #define ARDUHAL_SHORT_LOG_FORMAT(letter, format) ARDUHAL_LOG_COLOR_##letter format ARDUHAL_LOG_RESET_COLOR "\r\n"
 #define ARDUHAL_LOG_FORMAT(letter, format)                                                             \
@@ -94,7 +95,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_v(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_v(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(V, format), ##__VA_ARGS__)
     #define log_buf_v(b, l)          \
@@ -134,7 +135,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_d(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_d(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__)
     #define log_buf_d(b, l)          \
@@ -174,7 +175,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_i(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_i(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__)
     #define log_buf_i(b, l)          \
@@ -214,7 +215,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_w(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_w(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__)
     #define log_buf_w(b, l)          \
@@ -254,7 +255,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_e(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_e(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
     #define log_buf_e(b, l)          \
@@ -294,7 +295,7 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
     #define log_n(format, ...)                                            \
       do {                                                                \
         log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
-        log_CrashLog(true, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
+        log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_n(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
     #define log_buf_n(b, l)          \
@@ -332,9 +333,9 @@ void log_CrashLog(bool panic, const char *format, ...) __attribute__((weak));
 #include "esp_log.h"
 
 #ifdef USE_ESP_IDF_LOG
-  #ifndef TAG
-    #define TAG "ARDUINO"
-  #endif
+//#ifndef TAG
+//#define TAG "ARDUINO"
+//#endif
 //#define log_n(format, ...) myLog(ESP_LOG_NONE, format, ##__VA_ARGS__)
 #else
   #ifdef CONFIG_ARDUHAL_ESP_LOG
