@@ -21,6 +21,8 @@ void base64_init_decodestate(base64_decodestate* state_in){
   state_in->plainchar = 0;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough="
 static int base64_decode_block_signed(const int8_t* code_in, const int length_in, int8_t* plaintext_out, base64_decodestate* state_in){
   const int8_t* codechar = code_in;
   int8_t* plainchar = plaintext_out;
@@ -77,6 +79,7 @@ static int base64_decode_block_signed(const int8_t* code_in, const int length_in
   /* control should not reach here */
   return plainchar - plaintext_out;
 }
+#pragma GCC diagnostic pop
 
 static int base64_decode_chars_signed(const int8_t* code_in, const int length_in, int8_t* plaintext_out){
   base64_decodestate _state;

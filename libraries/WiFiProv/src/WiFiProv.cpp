@@ -66,6 +66,8 @@ static void get_device_service_name(prov_scheme_t prov_scheme, char *service_nam
 #endif
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 static esp_err_t custom_prov_data_handler(uint32_t session_id, const uint8_t *inbuf, ssize_t inlen, uint8_t **outbuf, ssize_t *outlen, void *priv_data){
     if (inbuf) {
     	log_d("Received data: %.*s", inlen, (char *)inbuf);
@@ -74,6 +76,7 @@ static esp_err_t custom_prov_data_handler(uint32_t session_id, const uint8_t *in
     *outlen = 0;
     return ESP_OK;
 }
+#pragma GCC diagnostic pop
 
 void WiFiProvClass :: beginProvision(prov_scheme_t prov_scheme, scheme_handler_t scheme_handler, wifi_prov_security_t security, const char * pop, const char *service_name, const char *service_key, uint8_t * uuid)
 {

@@ -374,17 +374,27 @@ size_t TwoWire::requestFrom(uint16_t address, size_t size, bool sendStop)
         rxIndex = 0;
         rxLength = 0;
         err = i2cWriteReadNonStop(num, address, txBuffer, txLength, rxBuffer, size, _timeOutMillis, &rxLength);
+        if (err != ESP_OK)
+        {
+            log_e("'i2cWriteReadNonStop' failed");
+            return 0;
+        }
     } else {
 #if !CONFIG_DISABLE_HAL_LOCKS
         //acquire lock
         if(lock == NULL || xSemaphoreTake(lock, portMAX_DELAY) != pdTRUE){
-            log_e("could not acquire lock");
+            log_e("Could not acquire lock");
             return 0;
         }
 #endif
         rxIndex = 0;
         rxLength = 0;
         err = i2cRead(num, address, rxBuffer, size, _timeOutMillis, &rxLength);
+        if (err != ESP_OK)
+        {
+            log_e("'i2cRead' failed");
+            return 0;
+        }
     }
 #if !CONFIG_DISABLE_HAL_LOCKS
     //release lock

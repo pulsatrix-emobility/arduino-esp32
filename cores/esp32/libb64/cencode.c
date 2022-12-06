@@ -22,6 +22,8 @@ char base64_encode_value(char value_in)
     return encoding[(int)value_in];
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough="
 int base64_encode_block(const char* plaintext_in, int length_in, char* code_out, base64_encodestate* state_in)
 {
     const char* plainchar = plaintext_in;
@@ -70,6 +72,7 @@ int base64_encode_block(const char* plaintext_in, int length_in, char* code_out,
     /* control should not reach here */
     return codechar - code_out;
 }
+#pragma GCC diagnostic pop
 
 int base64_encode_blockend(char* code_out, base64_encodestate* state_in)
 {

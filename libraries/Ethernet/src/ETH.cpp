@@ -84,6 +84,8 @@ static void emac_config_apll_clock(void)
 }
 #endif
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 static esp_err_t on_lowlevel_init_done(esp_eth_handle_t eth_handle){
 #if CONFIG_IDF_TARGET_ESP32
     if(eth_clock_mode > ETH_CLOCK_GPIO17_OUT){
@@ -168,6 +170,7 @@ static esp_err_t on_lowlevel_init_done(esp_eth_handle_t eth_handle){
 #endif
     return ESP_OK;
 }
+#pragma GCC diagnostic pop
 
 
 

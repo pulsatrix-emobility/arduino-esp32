@@ -42,6 +42,8 @@ extern "C" {
 #include "lwip/err.h"
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 static const char * cipher_str(int cipher)
 {
     switch (cipher) {
@@ -68,6 +70,7 @@ static const char * cipher_str(int cipher)
     }
 	return ("UNKNOWN");
 }
+#pragma GCC diagnostic pop
 
 bool WiFiScanClass::_scanAsync = false;
 uint32_t WiFiScanClass::_scanStarted = 0;

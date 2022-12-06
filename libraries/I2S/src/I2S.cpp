@@ -144,7 +144,11 @@ int I2SClass::_installDriver(){
     .intr_alloc_flags = ESP_INTR_FLAG_LEVEL2,
     .dma_buf_count = _I2S_DMA_BUFFER_COUNT,
     .dma_buf_len = _i2s_dma_buffer_size,
-    .use_apll = false
+    .use_apll = false,
+    .tx_desc_auto_clear = false,
+    .fixed_mclk = 0,
+    .mclk_multiple = (esp_i2s::i2s_mclk_multiple_t)0,
+    .bits_per_chan = (esp_i2s::i2s_bits_per_chan_t)0
   };
 
   if(_driveClock == false){
@@ -317,6 +321,7 @@ int I2SClass::begin(int mode, int sampleRate, int bitsPerSample, bool driveClock
 int I2SClass::_applyPinSetting(){
   if(_driverInstalled){
     esp_i2s::i2s_pin_config_t pin_config = {
+      .mck_io_num = 0,
       .bck_io_num = _sckPin,
       .ws_io_num = _fsPin,
       .data_out_num = I2S_PIN_NO_CHANGE,
@@ -988,7 +993,6 @@ void I2SClass::_post_read_data_fix(void *input, size_t *size){
 // bytes_written - number of bytes used from original buffer
 // actual_bytes_written - number of bytes written by i2s_write after fix
 void I2SClass::_fix_and_write(void *output, size_t size, size_t *bytes_written, size_t *actual_bytes_written){
-  long start = millis();
   ulong src_ptr = 0;
   uint8_t* buff = NULL;
   size_t buff_size = size;
@@ -1049,6 +1053,8 @@ void I2SClass::_fix_and_write(void *output, size_t size, size_t *bytes_written, 
 
 
 #if (SOC_I2S_SUPPORTS_ADC && SOC_I2S_SUPPORTS_DAC)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough="
 int I2SClass::_gpioToAdcUnit(gpio_num_t gpio_num, esp_i2s::adc_unit_t* adc_unit){
   switch(gpio_num){
 #if CONFIG_IDF_TARGET_ESP32
@@ -1128,6 +1134,7 @@ int I2SClass::_gpioToAdcUnit(gpio_num_t gpio_num, esp_i2s::adc_unit_t* adc_unit)
       return 0; // ERR
   }
 }
+#pragma GCC diagnostic push
 
 int I2SClass::_gpioToAdcChannel(gpio_num_t gpio_num, esp_i2s::adc_channel_t* adc_channel){
  switch(gpio_num){

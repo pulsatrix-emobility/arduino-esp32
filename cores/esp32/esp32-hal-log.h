@@ -172,9 +172,9 @@ extern void log_CrashLog(bool panic, const char *format, ...);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_INFO
   #ifndef USE_ESP_IDF_LOG
-    #define log_i(format, ...)                                            \
-      do {                                                                \
-        log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__);         \
+    #define log_i(format, ...)                                             \
+      do {                                                                 \
+        log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__);          \
         log_CrashLog(false, ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_i(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__)
@@ -212,9 +212,9 @@ extern void log_CrashLog(bool panic, const char *format, ...);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_WARN
   #ifndef USE_ESP_IDF_LOG
-    #define log_w(format, ...)                                            \
-      do {                                                                \
-        log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__);         \
+    #define log_w(format, ...)                                             \
+      do {                                                                 \
+        log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__);          \
         log_CrashLog(false, ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_w(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__)
@@ -252,9 +252,9 @@ extern void log_CrashLog(bool panic, const char *format, ...);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_ERROR
   #ifndef USE_ESP_IDF_LOG
-    #define log_e(format, ...)                                            \
-      do {                                                                \
-        log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    #define log_e(format, ...)                                             \
+      do {                                                                 \
+        log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);          \
         log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_e(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
@@ -292,9 +292,9 @@ extern void log_CrashLog(bool panic, const char *format, ...);
 
 #if ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_NONE
   #ifndef USE_ESP_IDF_LOG
-    #define log_n(format, ...)                                            \
-      do {                                                                \
-        log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    #define log_n(format, ...)                                             \
+      do {                                                                 \
+        log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);          \
         log_CrashLog(false, ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__); \
       } while (0)
     #define isr_log_n(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
