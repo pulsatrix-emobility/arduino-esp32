@@ -393,6 +393,10 @@ size_t TwoWire::requestFrom(uint16_t address, size_t size, bool sendStop)
         if (err != ESP_OK)
         {
             log_e("'i2cRead' failed");
+            #if !CONFIG_DISABLE_HAL_LOCKS
+                //release lock
+                xSemaphoreGive(lock);
+            #endif
             return 0;
         }
     }
