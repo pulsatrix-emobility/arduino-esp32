@@ -277,7 +277,7 @@ void HardwareSerial::_uartEventTask(void *args)
 void HardwareSerial::begin(unsigned long baud, uint32_t config, int8_t rxPin, int8_t txPin, bool invert, unsigned long timeout_ms, uint8_t rxfifo_full_thrhd)
 {
     if(0 > _uart_nr || _uart_nr >= SOC_UART_NUM) {
-        log_e("Serial number is invalid, please use numers from 0 to %u", SOC_UART_NUM - 1);
+        log_e("Serial number is invalid, please use numbers from 0 to %u", SOC_UART_NUM - 1);
         return;
     }
 
