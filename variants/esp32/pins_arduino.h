@@ -19,11 +19,11 @@ static const uint8_t SCL = 22;
 
 static const uint8_t SS    = 5;
 //static const uint8_t MOSI  = 23;
-static const uint8_t MOSI  = 2; // pulsatrix openEVCC v2.02
+static const uint8_t MOSI  = 2; // pulsatrix openSECC v2.02
 //static const uint8_t MISO  = 19;
-static const uint8_t MISO  = 15; // pulsatrix openEVCC v2.02
+static const uint8_t MISO  = 15; // pulsatrix openSECC v2.02
 //static const uint8_t SCK   = 18;
-static const uint8_t SCK  = 13; // pulsatrix openEVCC v2.02
+static const uint8_t SCK  = 13; // pulsatrix openSECC v2.02
 
 static const uint8_t A0 = 36;
 static const uint8_t A3 = 39;
