@@ -324,8 +324,8 @@ config ARDUINO_SELECTIVE_HTTPClient
     select ARDUINO_SELECTIVE_WiFiClientSecure
     default y
 
-config ARDUINO_SELECTIVE_LITTLEFS
-    bool "Enable LITTLEFS"
+config ARDUINO_SELECTIVE_LittleFS
+    bool "Enable LittleFS"
     depends on ARDUINO_SELECTIVE_COMPILATION
     select ARDUINO_SELECTIVE_FS
     default y
