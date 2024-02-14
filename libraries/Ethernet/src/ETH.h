@@ -70,6 +70,7 @@
 #include "esp_system.h"
 #include "esp_eth.h"
 #include "esp_netif.h"
+#include "hal/spi_types.h"
 
 #if CONFIG_ETH_USE_ESP32_EMAC
 #define ETH_PHY_IP101 ETH_PHY_TLK110
