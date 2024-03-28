@@ -31,6 +31,11 @@ class WiFiClientRxBuffer;
 class ESPLwIPClient : public Client
 {
 public:
+        // Solve the following compiler warning/error:
+        // ESPLwIPClient::connect' hides overloaded virtual functions
+        // (This is a quick fix until arduino-esp32 provides a solution)
+        using Client::connect;
+
         virtual int connect(IPAddress ip, uint16_t port, int32_t timeout) = 0;
         virtual int connect(const char *host, uint16_t port, int32_t timeout) = 0;
         virtual void setConnectionTimeout(uint32_t milliseconds) = 0;
