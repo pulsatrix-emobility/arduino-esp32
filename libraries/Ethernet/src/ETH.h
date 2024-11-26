@@ -165,6 +165,8 @@ class ETHClass {
         uint8_t linkSpeed();
         bool autoNegotiation();
         uint32_t phyAddr();
+        void restart();
+        void resetPhy();
 
         // Info APIs
         void printInfo(Print & out);
@@ -191,6 +193,7 @@ class ETHClass {
         esp_netif_t *_esp_netif;
         uint8_t _eth_index;
         eth_phy_type_t _phy_type;
+        esp_eth_phy_t *phy;
 #if ETH_SPI_SUPPORTS_CUSTOM
         SPIClass * _spi;
 #endif

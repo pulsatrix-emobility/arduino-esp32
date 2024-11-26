@@ -135,7 +135,7 @@ bool ETHClass::begin(eth_phy_type_t type, uint8_t phy_addr, int mdc, int mdio, i
     phy_config.phy_addr = phy_addr;
     phy_config.reset_gpio_num = _pin_power;
 
-    esp_eth_phy_t *phy = NULL;
+    phy = NULL;
     switch(type){
         case ETH_PHY_LAN8720:
             phy = esp_eth_phy_new_lan87xx(&phy_config);
@@ -175,7 +175,7 @@ bool ETHClass::begin(eth_phy_type_t type, uint8_t phy_addr, int mdc, int mdio, i
         log_e("esp_eth_driver_install failed! eth_handle is NULL");
         return false;
     }
-    
+
     esp_netif_config_t cfg = ESP_NETIF_DEFAULT_ETH();
 
     // Use ESP_NETIF_INHERENT_DEFAULT_ETH when multiple Ethernet interfaces are used and so you need to modify
@@ -623,6 +623,19 @@ bool ETHClass::begin(eth_phy_type_t type, uint8_t phy_addr, int cs, int irq, int
         NULL, 
 #endif
         sck, miso, mosi, spi_host, spi_freq_mhz);
+}
+
+void ETHClass::restart() {
+    if(_eth_started){
+        esp_eth_stop(_eth_handle);
+        esp_eth_start(_eth_handle);
+    }
+}
+
+void ETHClass::resetPhy() {
+    if(_eth_started){
+        phy->reset(phy);
+    }
 }
 
 void ETHClass::end(void)
