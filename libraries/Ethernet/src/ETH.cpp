@@ -850,7 +850,7 @@ bool ETHClass::beginSPI(
     perimanSetPinBusExtraType(_pin_rst, "ETH_RST");
   }
 
-  Network.onSysEvent(onEthConnected, ARDUINO_EVENT_ETH_CONNECTED);
+  _event_handle = Network.onSysEvent(onEthConnected, ARDUINO_EVENT_ETH_CONNECTED);
 
   return true;
 
@@ -886,7 +886,7 @@ static bool empty_ethDetachBus(void *bus_pointer) {
 
 void ETHClass::end(void) {
 
-  Network.removeEvent(onEthConnected, ARDUINO_EVENT_ETH_CONNECTED);
+  Network.removeEvent(_event_handle);
 
   if (_eth_handle != NULL) {
     if (esp_eth_stop(_eth_handle) != ESP_OK) {

@@ -76,6 +76,7 @@
 #include "esp_system.h"
 #include "esp_eth.h"
 #include "esp_netif.h"
+#include "hal/spi_types.h"
 
 #if CONFIG_ETH_USE_ESP32_EMAC
 #define ETH_PHY_IP101 ETH_PHY_TLK110
@@ -241,6 +242,7 @@ private:
   int8_t _pin_rmii_clock;
 #endif /* CONFIG_ETH_USE_ESP32_EMAC */
   size_t _task_stack_size;
+  network_event_handle_t _event_handle;
 
   static bool ethDetachBus(void *bus_pointer);
   bool beginSPI(
