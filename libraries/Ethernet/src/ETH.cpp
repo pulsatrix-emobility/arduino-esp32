@@ -634,7 +634,9 @@ void ETHClass::restart() {
 
 void ETHClass::resetPhy() {
     if(_eth_started){
+        esp_eth_stop(_eth_handle);
         phy->reset(phy);
+        esp_eth_start(_eth_handle);
     }
 }
 
