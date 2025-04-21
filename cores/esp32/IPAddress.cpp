@@ -427,4 +427,4 @@ esp_ip6_addr_type_t IPAddress::addr_type() const {
 }
 
 const IPAddress IN6ADDR_ANY(IPv6);
-const IPAddress INADDR_NONE(0,0,0,0);
+const IPAddress IP_ADDR_NONE(0,0,0,0);

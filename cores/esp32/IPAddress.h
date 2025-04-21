@@ -116,4 +116,4 @@ protected:
 };
 
 extern const IPAddress IN6ADDR_ANY;
-extern const IPAddress INADDR_NONE;
+extern const IPAddress IP_ADDR_NONE;
