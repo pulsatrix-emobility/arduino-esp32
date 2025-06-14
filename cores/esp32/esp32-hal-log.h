@@ -117,9 +117,9 @@ extern void (*log_hook)(const char*message, size_t length);
 #ifndef USE_ESP_IDF_LOG
 #define log_d(format, ...)                                            \
   do {                                                                \
-    log_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__);         \
+    log_printf(ARDUHAL_LOG_FORMAT(D, format), ## __VA_ARGS__);         \
   } while (0)
-#define isr_log_d(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(D, format), ##__VA_ARGS__)
+#define isr_log_d(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(D, format), ## __VA_ARGS__)
 #define log_buf_d(b,l) do{ARDUHAL_LOG_COLOR_PRINT(D);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
 #define log_d(format, ...) do {ESP_LOG_LEVEL_LOCAL(ESP_LOG_DEBUG, TAG, format, ##__VA_ARGS__);}while(0)
@@ -136,9 +136,9 @@ extern void (*log_hook)(const char*message, size_t length);
 #ifndef USE_ESP_IDF_LOG
 #define log_i(format, ...)                                            \
   do {                                                                \
-    log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__);         \
+    log_printf(ARDUHAL_LOG_FORMAT(I, format), ## __VA_ARGS__);         \
   } while (0)
-#define isr_log_i(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__)
+#define isr_log_i(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(I, format), ## __VA_ARGS__)
 #define log_buf_i(b,l) do{ARDUHAL_LOG_COLOR_PRINT(I);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
 #define log_i(format, ...) do {ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO, TAG, format, ##__VA_ARGS__);}while(0)
@@ -155,9 +155,9 @@ extern void (*log_hook)(const char*message, size_t length);
 #ifndef USE_ESP_IDF_LOG
 #define log_w(format, ...)                                            \
   do {                                                                \
-    log_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__);         \
+    log_printf(ARDUHAL_LOG_FORMAT(W, format), ## __VA_ARGS__);         \
   } while (0)
-#define isr_log_w(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(W, format), ##__VA_ARGS__)
+#define isr_log_w(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(W, format), ## __VA_ARGS__)
 #define log_buf_w(b,l) do{ARDUHAL_LOG_COLOR_PRINT(W);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
 #define log_w(format, ...) do {ESP_LOG_LEVEL_LOCAL(ESP_LOG_WARN, TAG, format, ##__VA_ARGS__);}while(0)
@@ -174,9 +174,9 @@ extern void (*log_hook)(const char*message, size_t length);
 #ifndef USE_ESP_IDF_LOG
 #define log_e(format, ...)                                            \
   do {                                                                \
-    log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    log_printf(ARDUHAL_LOG_FORMAT(E, format), ## __VA_ARGS__);         \
   } while (0)
-#define isr_log_e(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
+#define isr_log_e(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ## __VA_ARGS__)
 #define log_buf_e(b,l) do{ARDUHAL_LOG_COLOR_PRINT(E);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
 #define log_e(format, ...) do {ESP_LOG_LEVEL_LOCAL(ESP_LOG_ERROR, TAG, format, ##__VA_ARGS__);}while(0)
@@ -193,9 +193,9 @@ extern void (*log_hook)(const char*message, size_t length);
 #ifndef USE_ESP_IDF_LOG
 #define log_n(format, ...)                                            \
   do {                                                                \
-    log_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__);         \
+    log_printf(ARDUHAL_LOG_FORMAT(E, format), ## __VA_ARGS__);         \
   } while (0)
-#define isr_log_n(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ##__VA_ARGS__)
+#define isr_log_n(format, ...) ets_printf(ARDUHAL_LOG_FORMAT(E, format), ## __VA_ARGS__)
 #define log_buf_n(b,l) do{ARDUHAL_LOG_COLOR_PRINT(E);log_print_buf(b,l);ARDUHAL_LOG_COLOR_PRINT_END;}while(0)
 #else
 #define log_n(format, ...) do {ESP_LOG_LEVEL_LOCAL(ESP_LOG_ERROR, TAG, format, ##__VA_ARGS__);}while(0)
@@ -228,16 +228,16 @@ extern void (*log_hook)(const char*message, size_t length);
 #undef ESP_EARLY_LOGD
 #undef ESP_EARLY_LOGV
 
-#define ESP_LOGE(tag, format, ...)  log_e("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_LOGW(tag, format, ...)  log_w("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_LOGI(tag, format, ...)  log_i("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_LOGD(tag, format, ...)  log_d("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_LOGV(tag, format, ...)  log_v("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_EARLY_LOGE(tag, format, ...)  isr_log_e("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_EARLY_LOGW(tag, format, ...)  isr_log_w("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_EARLY_LOGI(tag, format, ...)  isr_log_i("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_EARLY_LOGD(tag, format, ...)  isr_log_d("[%s] " format, tag, ##__VA_ARGS__)
-#define ESP_EARLY_LOGV(tag, format, ...)  isr_log_v("[%s] " format, tag, ##__VA_ARGS__)
+#define ESP_LOGE(tag, format, ...)  log_e("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_LOGW(tag, format, ...)  log_w("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_LOGI(tag, format, ...)  log_i("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_LOGD(tag, format, ...)  log_d("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_LOGV(tag, format, ...)  log_v("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_EARLY_LOGE(tag, format, ...)  isr_log_e("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_EARLY_LOGW(tag, format, ...)  isr_log_w("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_EARLY_LOGI(tag, format, ...)  isr_log_i("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_EARLY_LOGD(tag, format, ...)  isr_log_d("[%s] " format, tag, ## __VA_ARGS__)
+#define ESP_EARLY_LOGV(tag, format, ...)  isr_log_v("[%s] " format, tag, ## __VA_ARGS__)
 #endif
 #endif
 
