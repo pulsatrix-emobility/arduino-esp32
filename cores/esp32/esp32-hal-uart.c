@@ -889,12 +889,20 @@ int log_printfv(const char *format, va_list arg)
             return 0;
         }
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 // This causes dead locks with logging in specific cases and also with C++ constructors that may send logs
 #if !CONFIG_DISABLE_HAL_LOCKS
     if(s_uart_debug_nr != -1 && _uart_bus_array[s_uart_debug_nr].lock){
         xSemaphoreTake(_uart_bus_array[s_uart_debug_nr].lock, portMAX_DELAY);
     }
 #endif
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 #if CONFIG_IDF_TARGET_ESP32C3
     vsnprintf(temp, len+1, format, arg);
     ets_printf("%s", temp);
@@ -906,12 +914,20 @@ int log_printfv(const char *format, va_list arg)
         ets_write_char_uart(temp[i]);
     }
 #endif
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 // This causes dead locks with logging and also with constructors that may send logs
 #if !CONFIG_DISABLE_HAL_LOCKS
     if(s_uart_debug_nr != -1 && _uart_bus_array[s_uart_debug_nr].lock){
         xSemaphoreGive(_uart_bus_array[s_uart_debug_nr].lock);
     }
 #endif
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     if(len >= sizeof(loc_buf)){
         free(temp);
     }
