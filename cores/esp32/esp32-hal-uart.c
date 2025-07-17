@@ -1318,9 +1318,10 @@ void uartSetDebug(uart_t *uart) {
 int uartGetDebug() {
   return s_uart_debug_nr;
 }
+void (*log_hook)(const char*message, size_t length) = 0;
 
 int log_printfv(const char *format, va_list arg) {
-  static char loc_buf[64];
+  static char loc_buf[200];
   char *temp = loc_buf;
   uint32_t len;
   va_list copy;
@@ -1333,24 +1334,30 @@ int log_printfv(const char *format, va_list arg) {
       return 0;
     }
   }
-  /*
+
 // This causes dead locks with logging in specific cases and also with C++ constructors that may send logs
 #if !CONFIG_DISABLE_HAL_LOCKS
     if(s_uart_debug_nr != -1 && _uart_bus_array[s_uart_debug_nr].lock){
         xSemaphoreTake(_uart_bus_array[s_uart_debug_nr].lock, portMAX_DELAY);
     }
 #endif
-*/
-  vsnprintf(temp, len + 1, format, arg);
-  ets_printf("%s", temp);
-  /*
+
+  // vsnprintf(temp, len + 1, format, arg);
+  // ets_printf("%s", temp);
+  int wlen = vsnprintf(temp, len+1, format, arg);
+  if(log_hook)
+    log_hook(temp, wlen);
+  for (int i = 0; i < wlen; i++) {
+    ets_write_char_uart(temp[i]);
+  }
+
 // This causes dead locks with logging and also with constructors that may send logs
 #if !CONFIG_DISABLE_HAL_LOCKS
     if(s_uart_debug_nr != -1 && _uart_bus_array[s_uart_debug_nr].lock){
         xSemaphoreGive(_uart_bus_array[s_uart_debug_nr].lock);
     }
 #endif
-*/
+
   if (len >= sizeof(loc_buf)) {
     free(temp);
   }

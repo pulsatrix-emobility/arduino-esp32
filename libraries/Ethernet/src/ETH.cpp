@@ -281,7 +281,7 @@ bool ETHClass::begin(eth_phy_type_t type, int32_t phy_addr, int mdc, int mdio, i
   eth_phy_config_t phy_config = ETH_PHY_DEFAULT_CONFIG();
   phy_config.phy_addr = phy_addr;
   phy_config.reset_gpio_num = _pin_power;
-
+  phy = NULL;
   switch (type) {
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0)
     case ETH_PHY_GENERIC: _phy = esp_eth_phy_new_generic(&phy_config); break;
@@ -1163,6 +1163,21 @@ size_t ETHClass::printDriverInfo(Print &out) const {
   }
   bytes += out.printf(",ADDR:0x%lX", phyAddr());
   return bytes;
+}
+
+void ETHClass::restart() {
+  if(_eth_started){
+    esp_eth_stop(_eth_handle);
+    esp_eth_start(_eth_handle);
+  }
+}
+
+void ETHClass::resetPhy() {
+  if(_eth_started){
+    esp_eth_stop(_eth_handle);
+    phy->reset(phy);
+    esp_eth_start(_eth_handle);
+  }
 }
 
 ETHClass ETH;

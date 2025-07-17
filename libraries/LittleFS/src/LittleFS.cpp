@@ -71,6 +71,7 @@ bool LittleFSFS::begin(bool formatOnFail, const char *basePath, uint8_t maxOpenF
 
   esp_err_t err = esp_vfs_littlefs_register(&conf);
   if (err == ESP_FAIL && formatOnFail) {
+    log_e("Failed to mount, trying to format: %d", err);
     if (format()) {
       err = esp_vfs_littlefs_register(&conf);
     }
@@ -95,11 +96,11 @@ void LittleFSFS::end() {
 }
 
 bool LittleFSFS::format() {
-  bool wdt_active = disableCore0WDT();
+  // bool wdt_active = disableCore0WDT();
   esp_err_t err = esp_littlefs_format(partitionLabel_);
-  if (wdt_active) {
-    enableCore0WDT();
-  }
+  // if (wdt_active) {
+    // enableCore0WDT();
+  // }
   if (err) {
     log_e("Formatting LittleFS failed! Error: %d", err);
     return false;

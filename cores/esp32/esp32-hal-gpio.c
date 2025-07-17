@@ -1,4 +1,4 @@
-// Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
+  // Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -191,7 +191,12 @@ extern int ARDUINO_ISR_ATTR __digitalRead(uint8_t pin) {
 }
 
 static void ARDUINO_ISR_ATTR __onPinInterrupt(void *arg) {
-  InterruptHandle_t *isr = (InterruptHandle_t *)arg;
+
+  if (!arg) {
+    return; // avoid crash when there is a null handler
+  }
+  InterruptHandle_t * isr = (InterruptHandle_t*)arg;
+
   if (isr->fn) {
     if (isr->arg) {
       ((voidFuncPtrArg)isr->fn)(isr->arg);

@@ -69,6 +69,7 @@
 #define ETH_SPI_SUPPORTS_NO_IRQ 1
 
 #include "Network.h"
+#include "hal/spi_types.h"
 
 #if ETH_SPI_SUPPORTS_CUSTOM
 #include "SPI.h"
@@ -201,7 +202,8 @@ public:
   bool setAutoNegotiation(bool on);
 
   uint32_t phyAddr() const;
-
+  void restart();
+  void resetPhy();
   esp_eth_handle_t handle() const;
 
 #if ETH_SPI_SUPPORTS_CUSTOM
@@ -223,6 +225,7 @@ public:
   void _onEthEvent(int32_t event_id, void *event_data);
 
 private:
+  esp_eth_phy_t *phy;
   esp_eth_handle_t _eth_handle;
   uint8_t _eth_index;
   eth_phy_type_t _phy_type;

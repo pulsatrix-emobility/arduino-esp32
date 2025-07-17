@@ -96,7 +96,7 @@ FileImplPtr VFSImpl::open(const char *fpath, const char *mode, const bool create
     return std::make_shared<VFSFileImpl>(this, fpath, mode);
   }
 
-  log_e("%s does not exist, no permits for creation", temp);
+  log_v("%s does not exist, no permits for creation", temp);
   free(temp);
   return FileImplPtr();
 }
