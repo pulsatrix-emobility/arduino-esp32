@@ -705,7 +705,6 @@ uart_t *uartBegin(
     }
   }
 #endif
-
 #if !CONFIG_DISABLE_HAL_LOCKS
   if (uart->lock == NULL) {
     uart->lock = xSemaphoreCreateMutex();
@@ -715,7 +714,6 @@ uart_t *uartBegin(
     }
   }
 #endif
-
   if (uart_is_driver_installed(uart_nr)) {
     log_v("UART%d Driver already installed.", uart_nr);
     // some parameters can't be changed unless we end the UART driver
@@ -829,13 +827,15 @@ uart_t *uartBegin(
       uart_config.source_clk = UART_SCLK_XTAL;  // valid for C2, S3, C3, C6, H2 and P4
       log_v("Setting UART%d to use XTAL clock", uart_nr);
 #elif SOC_UART_SUPPORT_REF_TICK
-      if (baudrate <= REF_TICK_BAUDRATE_LIMIT) {
-        uart_config.source_clk = UART_SCLK_REF_TICK;  // valid for ESP32, S2 - MAX supported baud rate is 250 Kbps
-        log_v("Setting UART%d to use REF_TICK clock", uart_nr);
-      } else {
+      // if (baudrate <= REF_TICK_BAUDRATE_LIMIT) {
+      //   uart_config.source_clk = UART_SCLK_REF_TICK;  // valid for ESP32, S2 - MAX supported baud rate is 250 Kbps
+      //   log_v("Setting UART%d to use REF_TICK clock", uart_nr);
+      // } else {
+      // Switched the source to APB clock.   Do not modify as it will miss match the baud rate for MC upadte
+      // do not modify here, we need this clock source for MC update sucess
         uart_config.source_clk = UART_SCLK_APB;  // baudrate may change with the APB Frequency!
         log_v("Setting UART%d to use APB clock", uart_nr);
-      }
+      // }
 #else
       // Default CLK Source: CLK_APB for ESP32|S2|S3|C3 -- CLK_PLL_F40M for C2 -- CLK_PLL_F48M for H2 -- CLK_PLL_F80M for C6|P4
       uart_config.source_clk = UART_SCLK_DEFAULT;  // baudrate may change with the APB Frequency!
