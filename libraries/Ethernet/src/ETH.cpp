@@ -1173,12 +1173,13 @@ void ETHClass::restart() {
 }
 
 void ETHClass::resetPhy() {
-  if(_eth_started){
+  if(_eth_started && _phy != NULL) {
     esp_eth_stop(_eth_handle);
-    phy->reset(phy);
+    _phy->reset(_phy);
     esp_eth_start(_eth_handle);
   }
 }
+
 
 ETHClass ETH;
 
