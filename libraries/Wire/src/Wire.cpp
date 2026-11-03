@@ -585,8 +585,15 @@ size_t TwoWire::write(const uint8_t *data, size_t quantity)
 
 int TwoWire::available()
 {
-    int result = rxLength - rxIndex;
-    return result;
+    // pulsatrix (DEV-3830): the bus lock is released when requestFrom() returns, so available() and
+    // read() race with another task's requestFrom() resetting rxIndex/rxLength. When that leaves
+    // rxIndex ahead of rxLength, the unsigned difference wrapped to -1, which callers looping on
+    // available() take for "more data" while read() returns -1 - writing 0xFF past the end of their
+    // buffer and up the stack until something crashes. Each field is read once so the comparison and
+    // the difference see the same values.
+    size_t index = rxIndex;
+    size_t length = rxLength;
+    return (index < length) ? (int)(length - index) : 0;
 }
 
 int TwoWire::read()
